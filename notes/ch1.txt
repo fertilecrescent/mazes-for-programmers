@@ -1,0 +1,43 @@
+
+this chapter focuses on algorithms for producing mazes randomly
+
+you can think of a maze as a grid
+
+# # # # # # # # #
+#   #   #   #   #
+#   #   #   #   #
+# # # # # # # # #
+#   #   #   #   #
+#   #   #   #   #
+# # # # # # # # #
+#   #   #   #   #
+#   #   #   #   #
+# # # # # # # # #
+
+we'll call the individual squares 'cells', 
+and the lines around them 'walls'
+
+'passages' are carved by erasing walls
+'mazes' are formed by carving passages
+
+most of the algorithms in this book form 'perfect mazes'
+    every cell can be reached by any other cell
+    there is only one path between two cells
+    there are no loops (paths that insersect themselves)
+
+* binary tree algorithm *
+
+visit each cell
+carve a wall north or east 
+    (unless that wall is an outer edge of the maze)
+
+the resulting maze can be represented as a binary tree
+
+what about the start and end points?
+the maze is perfect, so you can pick any two points to be your start and end
+
+always produces long corridors on the north and eastern boundaries
+easy to solve
+algorithm is fast (O(n)) and simple to understand
+
+* sidewinder algorithm *
