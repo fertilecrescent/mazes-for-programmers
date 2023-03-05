@@ -1,1 +1,3 @@
 take notes on module bundling
+what does ctx.beginPath() do?
+

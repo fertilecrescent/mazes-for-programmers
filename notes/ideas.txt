@@ -1,5 +1,6 @@
-we'll have users.
+we'll have users
 users can form mazes using the different algorithms
-and can save their mazes.
+and can save their mazes
+they could even be able to draw their own mazes
 
 mazes can be represented in the database by some ascii sequence
