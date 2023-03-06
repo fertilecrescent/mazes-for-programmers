@@ -2,9 +2,10 @@
   "name": "mazes-for-programmers",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx webpack; open src/public/index.html"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/fertilecrescent/mazes-for-programmers#readme",
   "devDependencies": {
+    "nodemon": "^2.0.21",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   }
