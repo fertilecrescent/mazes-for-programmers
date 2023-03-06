@@ -2,7 +2,7 @@ const { lineWidth } = require('./globals.js')
 const ctxWrapper = require('./ctxWrapper.js')
 
 class Cell {
-    constructor(maze, x, y, north, east, south, west) {
+    constructor(maze, x, y, north, east, south, west, bgColor) {
         this.maze = maze
         this.x = x
         this.y = y
@@ -10,6 +10,7 @@ class Cell {
         this.east = east
         this.south = south
         this.west = west
+        this.bgColor = bgColor
     }
 
     pixelLeft() {
@@ -28,7 +29,14 @@ class Cell {
         return (this.maze.height - this.y) * this.maze.cellSize + lineWidth/2
     }
 
-    draw() {
+    drawBackground() {
+        if (this.bgColor) {
+            ctxWrapper.fillRect(this.pixelLeft(), this.pixelTop(), 
+                                this.maze.cellSize, this.maze.cellSize, this.bgColor)
+        }
+    }
+
+    drawWalls() {
         if (this.north) {
             const [x0, x1] = [this.pixelLeft()-lineWidth/2, this.pixelRight()+lineWidth/2]
             const [y0, y1] = [this.pixelTop(), this.pixelTop()]
@@ -39,15 +47,85 @@ class Cell {
             const [y0, y1] = [this.pixelBottom()+lineWidth/2, this.pixelTop()-lineWidth/2]
             ctxWrapper.drawLine(x0, y0, x1, y1)
         }
-        if (this.south) {
+        if (this.bordersBottom()) {
             const [x0, x1] = [this.pixelLeft()-lineWidth/2, this.pixelRight()+lineWidth/2]
             const [y0, y1] = [this.pixelBottom(), this.pixelBottom()]
             ctxWrapper.drawLine(x0, y0, x1, y1)
         }
-        if (this.west) {
+        if (this.bordersLeft()) {
             const [x0, x1] = [this.pixelLeft(), this.pixelLeft()]
             const [y0, y1] = [this.pixelBottom()+lineWidth/2, this.pixelTop()-lineWidth/2]
             ctxWrapper.drawLine(x0, y0, x1, y1)
+        }
+    }
+
+    cellToNorth() {
+        if (!this.bordersTop()) {
+            return this.maze.getCell(this.x, this.y+1)
+        } else {
+            return null
+        }
+    }
+
+    cellToEast() {
+        if (!this.bordersRight()) {
+            return this.maze.getCell(this.x+1, this.y)
+        } else {
+            return null
+        }
+    }
+
+    cellToSouth() {
+        if (!this.bordersBottom()) {
+            return this.maze.getCell(this.x, this.y-1)
+        } else {
+            return null
+        }
+    }
+
+    cellToWest() {
+        if (!this.bordersLeft()) {
+            return this.maze.getCell(this.x-1, this.y)
+        } else {
+            return null
+        }
+    }
+
+    collapseNorth() {
+        if (this.bordersTop()) {
+            throw Error('cannot collapse the border wall')
+        } else {
+            this.north = false
+            this.cellToNorth().south = false
+        }
+    }
+
+    collapseEast() {
+        if (this.bordersRight()) {
+            throw Error('cannot collapse the border wall')
+        } else {
+            console.log(this, 'setting west to false')
+            console.log(this.cellToEast(), 'cell to east: getting set')
+            this.east = false
+            this.cellToEast().west = false
+        }
+    }
+
+    collapseSouth() {
+        if (this.bordersBottom()) {
+            throw Error('cannot collapse the border wall')
+        } else {
+            this.south = false
+            this.cellToSouth().north = false
+        }
+    }
+
+    collapseWest() {
+        if (this.bordersLeft()) {
+            throw Error('cannot collapse the border wall')
+        } else {
+            this.west = false
+            this.cellToWest().east = false
         }
     }
 
@@ -57,6 +135,36 @@ class Cell {
 
     bordersRight() {
         return this.x == this.maze.width - 1
+    }
+
+    bordersBottom() {
+        return this.y == 0
+    }
+
+    bordersLeft() {
+        return this.x == 0
+    }
+
+    neighbors() {
+        const neighbors = []
+        console.log(this, 'this')
+        if (!this.north) {
+            console.log(this.cellToNorth(), 'north')
+            neighbors.push(this.cellToNorth())
+        }
+        if (!this.east) {
+            console.log(this.cellToEast(), 'east')
+            neighbors.push(this.cellToEast())
+        }
+        if (!this.south) {
+            console.log(this.cellToSouth(), 'south')
+            neighbors.push(this.cellToSouth())
+        }
+        if (!this.west) {
+            console.log(this.cellToWest(), 'west')
+            neighbors.push(this.cellToWest())
+        }
+        return neighbors
     }
 }
 

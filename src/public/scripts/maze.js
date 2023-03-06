@@ -1,5 +1,7 @@
 const { ctx, lineWidth } = require('./globals.js')
 const Cell = require('./cell.js')
+const Distance = require('./distance.js')
+const {simplifiedDijkstra} = require('./algorithms.js')
 
 class Maze {
     constructor(width, height, cellSize) {
@@ -11,17 +13,12 @@ class Maze {
 
     initializeCells() {
         const cells = []
-        let [north, east, south, west] = [true, true, null, null]
 
         let row
         for (let y=0; y<this.height; y++) {
             row = []
             for (let x=0; x<this.width; x++) {
-                if (x == 0) {west = true}
-                else {west = false}
-                if (y == 0) {south = true}
-                else {south = false}
-                row.push(new Cell(this, x, y, north, east, south, west))
+                row.push(new Cell(this, x, y, true, true, true, true))
             }
             cells.push(row)
         }
@@ -33,8 +30,36 @@ class Maze {
         ctx.canvas.height = this.height * this.cellSize + lineWidth
         for (let row of this.cells) {
             for (let cell of row) {
-                cell.draw()
+                cell.drawBackground()
             }  
+        }
+        for (let row of this.cells) {
+            for (let cell of row) {
+                cell.drawWalls()
+            }  
+        }
+    }
+
+    getCell(x, y) {
+        return this.cells[y][x]
+    }
+
+    flattenCells() {
+        const flat = []
+        for (let row of this.cells) {
+            for (let cell of row) {
+                flat.push(cell)
+            }
+        }
+        return flat
+    }
+
+    colorByDistance(startCell) {
+        const colors = simplifiedDijkstra(this, startCell).toColor()
+        for (let x=0; x<this.width; x++) {
+            for (let y=0; y<this.height; y++) {
+                this.getCell(x, y).bgColor = colors[y][x]
+            }
         }
     }
 }

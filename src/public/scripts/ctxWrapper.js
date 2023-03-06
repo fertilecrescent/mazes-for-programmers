@@ -8,6 +8,13 @@ class ctxWrapper {
         ctx.lineTo(x1, y1)
         ctx.stroke()
     }
+
+    static fillRect(x, y, width, height, fillStyle) {
+        ctx.beginPath()
+        ctx.fillStyle = fillStyle
+        ctx.fillRect(x, y, width, height)
+        ctx.stroke()
+    }
 }
 console.log(ctxWrapper, 'ctxWrapper first')
 
