@@ -14,16 +14,15 @@ class Maze {
         let [north, east, south, west] = [true, true, null, null]
 
         let row
-        for (let y=this.height-1; y>=0; y--) {
+        for (let y=0; y<this.height; y++) {
             row = []
             for (let x=0; x<this.width; x++) {
                 if (x == 0) {west = true}
                 else {west = false}
-                if (y == this.height-1) {south = true}
+                if (y == 0) {south = true}
                 else {south = false}
                 row.push(new Cell(this, x, y, north, east, south, west))
             }
-            console.log(row)
             cells.push(row)
         }
         return cells

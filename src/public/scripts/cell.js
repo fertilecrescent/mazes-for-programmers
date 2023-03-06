@@ -1,6 +1,5 @@
 const { lineWidth } = require('./globals.js')
 const ctxWrapper = require('./ctxWrapper.js')
-console.log(ctxWrapper, 'ctxWrapper')
 
 class Cell {
     constructor(maze, x, y, north, east, south, west) {
@@ -22,11 +21,11 @@ class Cell {
     }
 
     pixelTop() {
-        return (this.y) * this.maze.cellSize + lineWidth/2
+        return (this.maze.height - this.y - 1) * this.maze.cellSize + lineWidth/2
     }
 
     pixelBottom() {
-        return (this.y+1) * this.maze.cellSize + lineWidth/2
+        return (this.maze.height - this.y) * this.maze.cellSize + lineWidth/2
     }
 
     draw() {
@@ -53,7 +52,7 @@ class Cell {
     }
 
     bordersTop() {
-        return this.y == 0
+        return this.y == this.maze.height - 1
     }
 
     bordersRight() {

@@ -23,7 +23,6 @@ function sidewinder(maze) {
     let run = []
     for (let row of maze.cells) {
         for (let cell of row) {
-            console.log(cell, 'cell')
             if (!cell.bordersTop()) {
                 run.push(cell)
                 let coin = Math.random()
