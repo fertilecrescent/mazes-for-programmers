@@ -31,16 +31,18 @@ class Cell {
 
     drawBackground() {
         if (this.bgColor) {
-            ctxWrapper.fillRect(this.pixelLeft() + lineWidth/2, this.pixelTop() - lineWidth/2, 
+            ctxWrapper.fillRect(this.pixelLeft(), this.pixelTop(), 
                                 this.maze.cellSize, this.maze.cellSize, this.bgColor)
         }
     }
 
-    eraseDot() {
-        ctx.clearRect(this.pixelLeft() + lineWidth/2, this.pixelTop()+lineWidth/2, 
-            this.maze.cellSize-lineWidth/2, this.maze.cellSize-lineWidth/2)
-        this.drawBackground()
-        this.drawWalls()
+    eraseDot(sizeRatio) {
+        const centerX = this.pixelRight() - this.maze.cellSize / 2
+        const centerY = this.pixelTop() + this.maze.cellSize / 2
+        const size = sizeRatio*this.maze.cellSize
+        ctx.clearRect(centerX-size/2-1, centerY-size/2-1, size+2, size+2)
+        ctxWrapper.fillRect(centerX-size/2-1, centerY-size/2-1, size+2, size+2, this.bgColor)
+        // ctxWrapper.drawCircle(centerX, centerY, sizeRatio*this.maze.cellSize/2, this.bgColor)
     }
 
     drawWalls() {
@@ -67,7 +69,6 @@ class Cell {
     }
 
     drawDot(sizeRatio, color) {
-        console.log('drawing dot')
         const centerX = this.pixelRight() - this.maze.cellSize / 2
         const centerY = this.pixelTop() + this.maze.cellSize / 2
         ctxWrapper.drawCircle(centerX, centerY, sizeRatio*this.maze.cellSize/2, color)

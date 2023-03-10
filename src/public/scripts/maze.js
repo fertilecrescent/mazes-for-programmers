@@ -43,27 +43,51 @@ class Maze {
                 cell.drawWalls()
             }  
         }
-        this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
+        this.drawDot()
     }
 
     getCell(x, y) {
         return this.cells[y][x]
     }
 
-    // moveDotRight() {
-    //     if (this.dotX < this.width - 1) {
-    //         this.getCell(this.dotX, this.dotY).eraseDot() // clear the previous dot
-    //         this.dotX++
-    //         this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
-    //     }
-    // }
+    moveDotLeft() {
+        if (this.dotX > 0) {
+            this.eraseDot()
+            this.dotX--
+            this.drawDot()
+        }
+    }
 
     moveDotRight() {
         if (this.dotX < this.width - 1) {
-            this.getCell(this.dotX, this.dotY).eraseDot() // clear the previous dot
+            this.eraseDot()
             this.dotX++
-            this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
+            this.drawDot()
         }
+    }
+
+    moveDotUp() {
+        if (this.dotY < this.height - 1) {
+            this.eraseDot()
+            this.dotY++
+            this.drawDot()
+        }
+    }
+
+    moveDotDown() {
+        if (this.dotY > 0) {
+            this.eraseDot()
+            this.dotY--
+            this.drawDot()
+        }
+    }
+
+    drawDot() {
+        this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
+    }
+
+    eraseDot() {
+        this.getCell(this.dotX, this.dotY).eraseDot(this.dotSizeRatio) 
     }
 
     flattenCells() {

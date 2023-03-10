@@ -5,6 +5,12 @@ const ctxWrapper = require('./ctxWrapper.js')
 document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowRight') {
         maze.moveDotRight()
+    } else if (e.key === 'ArrowLeft') {
+        maze.moveDotLeft()
+    } else if (e.key === 'ArrowUp') {
+        maze.moveDotUp()
+    } else if (e.key === 'ArrowDown') {
+        maze.moveDotDown()
     }
 })
 
