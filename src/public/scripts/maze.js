@@ -51,7 +51,8 @@ class Maze {
     }
 
     moveDotLeft() {
-        if (this.dotX > 0) {
+        const selectedCell = this.getCell(this.dotX, this.dotY)
+        if (!selectedCell.west) {
             this.eraseDot()
             this.dotX--
             this.drawDot()
@@ -59,7 +60,8 @@ class Maze {
     }
 
     moveDotRight() {
-        if (this.dotX < this.width - 1) {
+        const selectedCell = this.getCell(this.dotX, this.dotY)
+        if (!selectedCell.east) {
             this.eraseDot()
             this.dotX++
             this.drawDot()
@@ -67,7 +69,8 @@ class Maze {
     }
 
     moveDotUp() {
-        if (this.dotY < this.height - 1) {
+        const selectedCell = this.getCell(this.dotX, this.dotY)
+        if (!selectedCell.north) {
             this.eraseDot()
             this.dotY++
             this.drawDot()
@@ -75,7 +78,8 @@ class Maze {
     }
 
     moveDotDown() {
-        if (this.dotY > 0) {
+        const selectedCell = this.getCell(this.dotX, this.dotY)
+        if (!selectedCell.south) {
             this.eraseDot()
             this.dotY--
             this.drawDot()

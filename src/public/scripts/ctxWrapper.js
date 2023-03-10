@@ -11,7 +11,6 @@ class ctxWrapper {
 
     static fillRect(x, y, width, height, fillStyle) {
         ctx.beginPath()
-        console.log(x, y, width, height, fillStyle)
         ctx.fillStyle = fillStyle
         ctx.fillRect(x, y, width, height)
         ctx.stroke()

@@ -119,8 +119,6 @@ class Cell {
         if (this.bordersRight()) {
             throw Error('cannot collapse the border wall')
         } else {
-            console.log(this, 'setting west to false')
-            console.log(this.cellToEast(), 'cell to east: getting set')
             this.east = false
             this.cellToEast().west = false
         }
