@@ -1,13 +1,18 @@
 const { ctx, lineWidth } = require('./globals.js')
 const Cell = require('./cell.js')
-const Distance = require('./distance.js')
 const {simplifiedDijkstra} = require('./algorithms.js')
 
 class Maze {
-    constructor(width, height, cellSize) {
+    constructor({width, height, cellSize, startX, startY, dotSizeRatio, dotColor}) {
         this.width = width
         this.height = height
         this.cellSize = cellSize
+        this.startX = startX
+        this.startY = startY
+        this.dotX = startX
+        this.dotY = startY
+        this.dotSizeRatio = dotSizeRatio
+        this.dotColor = dotColor
         this.cells = this.initializeCells()
     }
 
@@ -38,10 +43,27 @@ class Maze {
                 cell.drawWalls()
             }  
         }
+        this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
     }
 
     getCell(x, y) {
         return this.cells[y][x]
+    }
+
+    // moveDotRight() {
+    //     if (this.dotX < this.width - 1) {
+    //         this.getCell(this.dotX, this.dotY).eraseDot() // clear the previous dot
+    //         this.dotX++
+    //         this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
+    //     }
+    // }
+
+    moveDotRight() {
+        if (this.dotX < this.width - 1) {
+            this.getCell(this.dotX, this.dotY).eraseDot() // clear the previous dot
+            this.dotX++
+            this.getCell(this.dotX, this.dotY).drawDot(this.dotSizeRatio, this.dotColor)
+        }
     }
 
     flattenCells() {

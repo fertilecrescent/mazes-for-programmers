@@ -11,11 +11,18 @@ class ctxWrapper {
 
     static fillRect(x, y, width, height, fillStyle) {
         ctx.beginPath()
+        console.log(x, y, width, height, fillStyle)
         ctx.fillStyle = fillStyle
         ctx.fillRect(x, y, width, height)
         ctx.stroke()
     }
+
+    static drawCircle(centerX, centerY, radius, color) {
+        ctx.beginPath()
+        ctx.fillStyle = color
+        ctx.arc(centerX, centerY, radius, 0, 2*Math.PI)
+        ctx.fill()
+    }
 }
-console.log(ctxWrapper, 'ctxWrapper first')
 
 module.exports = ctxWrapper

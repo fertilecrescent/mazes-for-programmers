@@ -1,4 +1,4 @@
-const { lineWidth } = require('./globals.js')
+const { lineWidth, ctx } = require('./globals.js')
 const ctxWrapper = require('./ctxWrapper.js')
 
 class Cell {
@@ -31,9 +31,16 @@ class Cell {
 
     drawBackground() {
         if (this.bgColor) {
-            ctxWrapper.fillRect(this.pixelLeft(), this.pixelTop(), 
+            ctxWrapper.fillRect(this.pixelLeft() + lineWidth/2, this.pixelTop() - lineWidth/2, 
                                 this.maze.cellSize, this.maze.cellSize, this.bgColor)
         }
+    }
+
+    eraseDot() {
+        ctx.clearRect(this.pixelLeft() + lineWidth/2, this.pixelTop()+lineWidth/2, 
+            this.maze.cellSize-lineWidth/2, this.maze.cellSize-lineWidth/2)
+        this.drawBackground()
+        this.drawWalls()
     }
 
     drawWalls() {
@@ -57,6 +64,13 @@ class Cell {
             const [y0, y1] = [this.pixelBottom()+lineWidth/2, this.pixelTop()-lineWidth/2]
             ctxWrapper.drawLine(x0, y0, x1, y1)
         }
+    }
+
+    drawDot(sizeRatio, color) {
+        console.log('drawing dot')
+        const centerX = this.pixelRight() - this.maze.cellSize / 2
+        const centerY = this.pixelTop() + this.maze.cellSize / 2
+        ctxWrapper.drawCircle(centerX, centerY, sizeRatio*this.maze.cellSize/2, color)
     }
 
     cellToNorth() {
@@ -147,21 +161,16 @@ class Cell {
 
     neighbors() {
         const neighbors = []
-        console.log(this, 'this')
         if (!this.north) {
-            console.log(this.cellToNorth(), 'north')
             neighbors.push(this.cellToNorth())
         }
         if (!this.east) {
-            console.log(this.cellToEast(), 'east')
             neighbors.push(this.cellToEast())
         }
         if (!this.south) {
-            console.log(this.cellToSouth(), 'south')
             neighbors.push(this.cellToSouth())
         }
         if (!this.west) {
-            console.log(this.cellToWest(), 'west')
             neighbors.push(this.cellToWest())
         }
         return neighbors
