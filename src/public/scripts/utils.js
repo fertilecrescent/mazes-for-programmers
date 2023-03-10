@@ -11,4 +11,8 @@ function makeNullArray(height, width) {
     return arr
 }
 
-module.exports = {makeNullArray}
+function randomSample(arr) {
+    return arr[Math.floor(Math.random()*arr.length)]
+}
+
+module.exports = {makeNullArray, randomSample}

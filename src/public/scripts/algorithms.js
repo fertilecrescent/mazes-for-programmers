@@ -1,4 +1,5 @@
 const Distance = require('./distance.js')
+const {randomSample} = require('./utils.js')
 
 function binary(maze) {
     for (let row of maze.cells) {
@@ -64,8 +65,15 @@ function simplifiedDijkstra(maze, startCell) {
     return distances
 }
 
+function alduousBroder(maze) {
+    const cells = maze.flatten()
+    const startCell = randomSample(cells)
+    
+}
+
 module.exports = {
     binary,
     sidewinder,
-    simplifiedDijkstra
+    simplifiedDijkstra,
+    alduousBroder
 }

@@ -112,6 +112,16 @@ class Maze {
             }
         }
     }
+
+    flatten() {
+        const cells = []
+        for (let row of this.cells) {
+            for (let cell of row) {
+                cells.push(cell)
+            }
+        }
+        return cells
+    }
 }
 
 module.exports = Maze
