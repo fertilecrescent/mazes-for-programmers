@@ -2,14 +2,14 @@ const { lineWidth, ctx } = require('./globals.js')
 const ctxWrapper = require('./ctxWrapper.js')
 
 class Cell {
-    constructor(maze, x, y, north, east, south, west, bgColor) {
+    constructor(maze, x, y, bgColor) {
         this.maze = maze
         this.x = x
         this.y = y
-        this.north = north
-        this.east = east
-        this.south = south
-        this.west = west
+        this.isLinkedNorth = false
+        this.isLinkedEast = false
+        this.isLinkedSouth = false
+        this.isLinkedWest = false
         this.bgColor = bgColor
     }
 
@@ -46,12 +46,12 @@ class Cell {
     }
 
     drawWalls() {
-        if (this.north) {
+        if (!this.isLinkedNorth) {
             const [x0, x1] = [this.pixelLeft()-lineWidth/2, this.pixelRight()+lineWidth/2]
             const [y0, y1] = [this.pixelTop(), this.pixelTop()]
             ctxWrapper.drawLine(x0, y0, x1, y1)
         }
-        if (this.east) {
+        if (!this.isLinkedEast) {
             const [x0, x1] = [this.pixelRight(), this.pixelRight()]
             const [y0, y1] = [this.pixelBottom()+lineWidth/2, this.pixelTop()-lineWidth/2]
             ctxWrapper.drawLine(x0, y0, x1, y1)
@@ -106,40 +106,50 @@ class Cell {
         }
     }
 
-    collapseNorth() {
+    linkNorth() {
         if (this.bordersTop()) {
             throw Error('cannot collapse the border wall')
         } else {
-            this.north = false
-            this.cellToNorth().south = false
+            this.isLinkedNorth = true
+            this.cellToNorth().isLinkedSouth = true
         }
     }
 
-    collapseEast() {
+    linkEast() {
         if (this.bordersRight()) {
             throw Error('cannot collapse the border wall')
         } else {
-            this.east = false
-            this.cellToEast().west = false
+            this.isLinkedEast = true
+            this.cellToEast().isLinkedWest = true
         }
     }
 
-    collapseSouth() {
+    linkSouth() {
         if (this.bordersBottom()) {
             throw Error('cannot collapse the border wall')
         } else {
-            this.south = false
-            this.cellToSouth().north = false
+            this.isLinkedSouth = true
+            this.cellToSouth().isLinkedNorth = true
         }
     }
 
-    collapseWest() {
+    linkWest() {
         if (this.bordersLeft()) {
             throw Error('cannot collapse the border wall')
         } else {
-            this.west = false
-            this.cellToWest().east = false
+            this.isLinkedWest = true
+            this.cellToWest().isLinkedEast = true
         }
+    }
+
+    linkCell(cell) {
+        if (!this.neighbors().includes(cell)) {
+            throw Error('can\'t link cells that aren\'t neighbors')
+        }
+        if (Object.is(cell, this.cellToNorth())) {this.linkNorth()}
+        if (Object.is(cell, this.cellToEast())) {this.linkEast()}
+        if (Object.is(cell, this.cellToSouth())) {this.linkSouth()}
+        if (Object.is(cell, this.cellToWest())) {this.linkWest()}
     }
 
     bordersTop() {
@@ -159,20 +169,17 @@ class Cell {
     }
 
     neighbors() {
-        const neighbors = []
-        if (!this.north) {
-            neighbors.push(this.cellToNorth())
-        }
-        if (!this.east) {
-            neighbors.push(this.cellToEast())
-        }
-        if (!this.south) {
-            neighbors.push(this.cellToSouth())
-        }
-        if (!this.west) {
-            neighbors.push(this.cellToWest())
-        }
-        return neighbors
+        return [this.cellToNorth(), this.cellToEast(), this.cellToSouth(), this.cellToWest()]
+        .filter((item) => item !== null)
+    }
+
+    linkedNeighbors() {
+        const linkedNeighbors = []
+        if (this.isLinkedNorth) {linkedNeighbors.push(this.cellToNorth())}
+        if (this.isLinkedEast) {linkedNeighbors.push(this.cellToEast())}
+        if (this.isLinkedSouth) {linkedNeighbors.push(this.cellToSouth())}
+        if (this.isLinkedWest) {linkedNeighbors.push(this.cellToWest())}
+        return linkedNeighbors
     }
 }
 

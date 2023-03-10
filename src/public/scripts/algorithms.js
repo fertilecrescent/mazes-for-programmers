@@ -6,12 +6,12 @@ function binary(maze) {
         for (let cell of row) {
             if (!(cell.bordersTop() && cell.bordersRight())) {
                 if (cell.bordersTop()) {
-                    cell.collapseEast()
+                    cell.linkEast()
                 } else if (cell.bordersRight()) {
-                    cell.collapseNorth()
+                    cell.linkNorth()
                 } else {
-                    if (Math.random() > .5) {cell.collapseNorth()}
-                    else {cell.collapseEast()}
+                    if (Math.random() > .5) {cell.linkNorth()}
+                    else {cell.linkEast()}
                 }
             }
         }
@@ -26,15 +26,15 @@ function sidewinder(maze) {
                 run.push(cell)
                 let coin = Math.random()
                 if (coin > .5 && !(cell.bordersRight())) {
-                    cell.collapseEast()
+                    cell.linkEast()
                 } else {
                     let index = Math.floor(Math.random()*run.length)
-                    run[index].collapseNorth()
+                    run[index].linkNorth()
                     run = []
                 }
             } else {
                 if (!cell.bordersRight()) {
-                    cell.collapseEast()
+                    cell.linkEast()
                 }
             }
         }
@@ -53,7 +53,7 @@ function simplifiedDijkstra(maze, startCell) {
         newFrontier = []
         for (let i=0; i<frontier.length; i++) {
             cell = frontier[i]
-            for (let n of cell.neighbors()) {
+            for (let n of cell.linkedNeighbors()) {
                 if (distances.getByCell(n) === null) {
                     distances.setByCell(n, distances.getByCell(cell)+1)
                     newFrontier.push(n)
@@ -67,8 +67,17 @@ function simplifiedDijkstra(maze, startCell) {
 
 function alduousBroder(maze) {
     const cells = maze.flatten()
-    const startCell = randomSample(cells)
-    
+    let currentCell = randomSample(maze.flatten())
+    let unvisited = cells.length - 1
+    let cellToLink
+    while (unvisited > 0) {
+        cellToLink = randomSample(currentCell.neighbors())
+        if (cellToLink.linkedNeighbors().length === 0) {
+            currentCell.linkCell(cellToLink)
+            unvisited--
+        }
+        currentCell = cellToLink
+    }
 }
 
 module.exports = {

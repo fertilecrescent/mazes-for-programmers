@@ -23,7 +23,7 @@ class Maze {
         for (let y=0; y<this.height; y++) {
             row = []
             for (let x=0; x<this.width; x++) {
-                row.push(new Cell(this, x, y, true, true, true, true))
+                row.push(new Cell(this, x, y))
             }
             cells.push(row)
         }
@@ -52,7 +52,7 @@ class Maze {
 
     moveDotLeft() {
         const selectedCell = this.getCell(this.dotX, this.dotY)
-        if (!selectedCell.west) {
+        if (selectedCell.isLinkedWest) {
             this.eraseDot()
             this.dotX--
             this.drawDot()
@@ -61,7 +61,7 @@ class Maze {
 
     moveDotRight() {
         const selectedCell = this.getCell(this.dotX, this.dotY)
-        if (!selectedCell.east) {
+        if (selectedCell.isLinkedEast) {
             this.eraseDot()
             this.dotX++
             this.drawDot()
@@ -70,7 +70,7 @@ class Maze {
 
     moveDotUp() {
         const selectedCell = this.getCell(this.dotX, this.dotY)
-        if (!selectedCell.north) {
+        if (selectedCell.isLinkedNorth) {
             this.eraseDot()
             this.dotY++
             this.drawDot()
@@ -79,7 +79,7 @@ class Maze {
 
     moveDotDown() {
         const selectedCell = this.getCell(this.dotX, this.dotY)
-        if (!selectedCell.south) {
+        if (selectedCell.isLinkedSouth) {
             this.eraseDot()
             this.dotY--
             this.drawDot()

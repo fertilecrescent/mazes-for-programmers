@@ -15,8 +15,8 @@ document.addEventListener('keyup', (e) => {
 })
 
 const mazeOpts = {
-    width: 30,
-    height: 30,
+    width: 10,
+    height: 10,
     cellSize: 20,
     startX: 0,
     startY: 0,
@@ -26,5 +26,5 @@ const mazeOpts = {
 
 const maze = new Maze(mazeOpts)
 algorithms.alduousBroder(maze)
-// maze.colorByDistance(maze.getCell(0, 0))
-// maze.draw()
+maze.colorByDistance(maze.getCell(0, 0))
+maze.draw()
