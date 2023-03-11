@@ -20,7 +20,7 @@ const mazeOpts = {
     cellSize: 20,
     startX: 0,
     startY: 0,
-    dotSizeRatio: 2/3,
+    dotSizeRatio: 1/3,
     dotColor: 'rgb(255, 0, 255)'
 }
 

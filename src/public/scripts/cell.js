@@ -37,11 +37,11 @@ class Cell {
     }
 
     eraseDot(sizeRatio) {
-        const centerX = this.pixelRight() - this.maze.cellSize / 2
-        const centerY = this.pixelTop() + this.maze.cellSize / 2
-        const size = sizeRatio*this.maze.cellSize
-        ctx.clearRect(centerX-size/2-1, centerY-size/2-1, size+2, size+2)
-        ctxWrapper.fillRect(centerX-size/2-1, centerY-size/2-1, size+2, size+2, this.bgColor)
+        // const centerX = this.pixelRight() - this.maze.cellSize / 2
+        // const centerY = this.pixelTop() + this.maze.cellSize / 2
+        // const size = sizeRatio*this.maze.cellSize
+        ctx.clearRect(this.pixelLeft(), this.pixelRight(), )
+        // ctxWrapper.fillRect(centerX-size/2-1+.5, centerY-size/2-1+.5, size+2, size+2, this.bgColor)
         // ctxWrapper.drawCircle(centerX, centerY, sizeRatio*this.maze.cellSize/2, this.bgColor)
     }
 
